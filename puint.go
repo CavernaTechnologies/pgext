@@ -63,10 +63,6 @@ func (p *Puint) DecodeBinary(ci *pgtype.ConnInfo, src []byte) error {
 		return fmt.Errorf("invalid uint")
 	}
 
-	if int(weight) != int(ndigits)-1 {
-		return fmt.Errorf("invalid uint")
-	}
-
 	if ndigits == 0 {
 		*p = 0
 		return nil
@@ -85,6 +81,12 @@ func (p *Puint) DecodeBinary(ci *pgtype.ConnInfo, src []byte) error {
 		}
 		accum += uint64(binary.BigEndian.Uint16(src[rp:]))
 		rp += 2
+	}
+
+	exp := (int32(weight) - int32(ndigits) + 1) * 4
+
+	for i := int32(0); i < exp; i++ {
+		accum *= 10
 	}
 
 	*p = Puint(accum)

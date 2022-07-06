@@ -6,4 +6,4 @@ This concrete struct is simply a ``uint64``, however it includes the pgx encodin
 
 While it is true that postgres does not have a uint64 type, this module asserts that ``pgext.Puint`` will be stored and loaded from a ``numeric(20,0)`` column type. The module will work with this definition alone, but it is recommended that a new domain is created in the postgres database. For example,
 
-```CREATE DOMAIN uint64 AS numeric(20,0) NOT NULL CHECK(0 <= amount AND amount <= 18446744073709551615);```
+```CREATE DOMAIN uint64 AS numeric(20,0) NOT NULL CHECK(0 <= VALUE AND VALUE <= 18446744073709551615);```

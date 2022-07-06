@@ -1,0 +1,13 @@
+version: 2
+sql:
+- schema: "schema.sql"
+  queries: "query.sql"
+  engine: "postgresql"
+  gen:
+    go: 
+      package: "database"
+      out: "database"
+      sql_package: "pgx/v4"
+      overrides:
+        - column: "uint_table.num"
+          go_type: "github.com/CavernaTechnologies/pgext.Puint"
