@@ -15,6 +15,11 @@ import (
 
 type Puint uint64
 
+// Perhaps not the most elegant way to get exponents, but I benchmarked it as faster
+var exps = [20]uint64{
+	1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000, 10000000000000, 100000000000000, 1000000000000000, 10000000000000000, 100000000000000000, 1000000000000000000, 10000000000000000000,
+}
+
 func (p *Puint) DecodeText(ci *pgtype.ConnInfo, src []byte) error {
 	if src == nil {
 		return fmt.Errorf("invalid value of puint")
@@ -85,9 +90,7 @@ func (p *Puint) DecodeBinary(ci *pgtype.ConnInfo, src []byte) error {
 
 	exp := (int32(weight) - int32(ndigits) + 1) * 4
 
-	for i := int32(0); i < exp; i++ {
-		accum *= 10
-	}
+	accum *= exps[exp]
 
 	*p = Puint(accum)
 	return nil
